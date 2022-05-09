@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ErrorMessage } from '../../domain/error';
 import { getRepository } from 'typeorm';
@@ -13,9 +13,14 @@ import { StudentEntity } from '../entities/student.entity';
 import { ScoreEntity } from '../entities/score.entity';
 import { StudentScoreEntity } from '../entities/student-score.entity';
 import { CourseProfessorEntity } from '../entities/course-professor.entity';
+import { ClientsToken } from '../../domain/clients-token';
 
 @Injectable()
 export class StudentRepository {
+  constructor(
+    @Inject(ClientsToken.NOTIFICATION_CLIENT)
+    private readonly notificationClient: ClientProxy,
+  ) {}
   /**
    * Create a student from dto.
    * @param {StudentDto} studentDto
@@ -27,7 +32,7 @@ export class StudentRepository {
       this.modelToEntity(student),
     );
 
-    console.log('new-student');
+    this.notificationClient.send({ cmd: 'new-student' }, student);
     return studentCreted.id;
   }
 
@@ -139,7 +144,7 @@ export class StudentRepository {
       course: courseTaken.courseProfessor.course.name,
       score: courseTaken.score.theoretical,
     };
-    //this.notificationClient.send({ cmd: 'new-score' }, { dtoNotification });
+    this.notificationClient.send({ cmd: 'new-score' }, { dtoNotification });
   }
 
   //#region  Private Methods

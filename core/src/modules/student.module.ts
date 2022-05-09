@@ -6,9 +6,18 @@ import { CommandHandlers } from '../application/commands/handlers';
 import { StudentController } from '../interface/controllers/student.controller';
 import { StudentService } from '../interface/services/student.service';
 import { QueriesHandlers } from '../application/queries/handlers';
+import { ClientsToken } from '../domain/clients-token';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [
+    ClientsModule.register([
+      {
+        name: ClientsToken.NOTIFICATION_CLIENT,
+        transport: Transport.TCP,
+      },
+    ]),
+    CqrsModule,
+  ],
   controllers: [StudentController],
   providers: [
     StudentService,
