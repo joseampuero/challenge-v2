@@ -10,7 +10,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { FindStudentsResponseDTO } from '../dtos/find-students-response.dto';
-import { StudentDto, StudentIdRequestParamsDto } from '../dtos/student.dto';
+import {
+  AssignScoreRequestParamsDto,
+  AssignStudentRequestParamsDto,
+  StudentDto,
+  StudentIdRequestParamsDto,
+} from '../dtos/student.dto';
 import { StudentService } from '../services/student.service';
 
 @Controller('student')
@@ -52,5 +57,26 @@ export class StudentController {
   @HttpCode(HttpStatus.OK)
   async findStudents(): Promise<FindStudentsResponseDTO> {
     return this.studentService.findStudents();
+  }
+
+  /* Assign Course to Student */
+  /*--------------------------------------------*/
+  @Post('assignCourse')
+  @HttpCode(HttpStatus.OK)
+  async assignCourse(
+    @Body() assignStudentDto: AssignStudentRequestParamsDto,
+  ): Promise<void> {
+    return this.studentService.assignCourse(assignStudentDto);
+  }
+
+  /* Assign Score to Student */
+  /*--------------------------------------------*/
+  @Post('assignScore/:id')
+  @HttpCode(HttpStatus.OK)
+  async assignScore(
+    @Param() id: string,
+    @Body() assignScoreDto: AssignScoreRequestParamsDto,
+  ): Promise<void> {
+    return this.studentService.assignScore(id, assignScoreDto);
   }
 }

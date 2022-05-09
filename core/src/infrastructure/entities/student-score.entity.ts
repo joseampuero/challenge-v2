@@ -23,4 +23,6 @@ export class StudentScoreEntity {
   @OneToOne(() => ScoreEntity, (score: ScoreEntity) => score.id)
   @JoinColumn()
   score: ScoreEntity;
+  @PrimaryColumn('uuid')
+  scoreId: string;
 }

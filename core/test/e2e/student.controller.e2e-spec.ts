@@ -2,7 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../../src/app.module';
-import { StudentDto } from '../../src/interface/dtos/student.dto';
+import {
+  AssignStudentRequestParamsDto,
+  StudentDto,
+} from '../../src/interface/dtos/student.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { StudentEntity } from 'src/infrastructure/entities/student.entity';
 
@@ -18,34 +21,51 @@ describe('student controller', () => {
   });
 
   it('create should return id', async () => {
+    const randomId = uuidv4();
     const dto: StudentDto = {
       name: 'robert',
       surname: 'deniro',
       email: 'rdeniro@gmail.com',
       dni: 12345678,
-      id: '',
+      id: randomId,
     };
     const { body } = await request(app.getHttpServer())
       .post('/student')
       .send(dto)
       .expect(HttpStatus.CREATED);
+
+    await request(app.getHttpServer())
+      .delete(`/student/${randomId}`)
+      .expect(HttpStatus.OK);
   });
 
   it('update should return changes', async () => {
-    const emailUpdated = 'rdeniro18@gmail.com';
+    const randomId = uuidv4();
+
     const dto: StudentDto = {
       name: 'robert',
       surname: 'deniro',
-      email: emailUpdated,
+      email: 'rdeniro@gmail.com',
       dni: 12345678,
-      id: '',
+      id: randomId,
     };
+    await request(app.getHttpServer())
+      .post('/student')
+      .send(dto)
+      .expect(HttpStatus.CREATED);
+
+    const emailUpdated = 'rdeniro18@gmail.com';
+    dto.email = emailUpdated;
+
     const { body } = await request(app.getHttpServer())
-      .put('/student/14725e59-e57d-4aaa-bd48-745471ed67af')
+      .put(`/student/${randomId}`)
       .send(dto)
       .expect(HttpStatus.OK);
 
     expect(body.email).toEqual(emailUpdated);
+    await request(app.getHttpServer())
+      .delete(`/student/${randomId}`)
+      .expect(HttpStatus.OK);
   });
 
   it('find() find student created', async () => {
@@ -116,5 +136,36 @@ describe('student controller', () => {
       },
     );
     expect(foundAfterDelete).toEqual(false);
+  });
+
+  it('cannot reassign a course', async () => {
+    const randomId = uuidv4();
+    const dto: StudentDto = {
+      name: 'diego',
+      surname: 'maradona',
+      email: 'diegote@gmail.com',
+      dni: 10101010,
+      id: randomId,
+    };
+
+    await request(app.getHttpServer())
+      .post('/student')
+      .send(dto)
+      .expect(HttpStatus.CREATED);
+
+    const courseAlgebra = '4f70ba2a-ce25-11ec-832c-401c839f1adc';
+    const assignDto: AssignStudentRequestParamsDto = {
+      id: randomId,
+      courseId: courseAlgebra,
+    };
+    await request(app.getHttpServer())
+      .post('/student/assignCourse')
+      .send(assignDto)
+      .expect(HttpStatus.OK);
+
+    await request(app.getHttpServer())
+      .post('/student/assignCourse')
+      .send(assignDto)
+      .expect(HttpStatus.METHOD_NOT_ALLOWED);
   });
 });
