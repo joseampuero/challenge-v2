@@ -15,6 +15,10 @@ import { ClientsToken } from '../domain/clients-token';
         name: ClientsToken.NOTIFICATION_CLIENT,
         transport: Transport.TCP,
       },
+      {
+        name: ClientsToken.AUTH_CLIENT,
+        transport: Transport.TCP,
+      },
     ]),
     CqrsModule,
   ],
