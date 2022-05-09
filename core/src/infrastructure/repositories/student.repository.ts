@@ -3,7 +3,10 @@ import { ClientProxy } from '@nestjs/microservices';
 import { ErrorMessage } from '../../domain/error';
 import { getRepository } from 'typeorm';
 import { Student, StudentImplement } from '../../domain/models/student.model';
-import { StudentDto } from '../../interface/dtos/student.dto';
+import {
+  StudentDto,
+  StudentIdRequestParamsDto,
+} from '../../interface/dtos/student.dto';
 import { StudentEntity } from '../entities/student.entity';
 
 @Injectable()
@@ -43,6 +46,27 @@ export class StudentRepository {
     student.update(studentToUpdate);
 
     return await studentRepository.save(studentToUpdate);
+  }
+
+  /**
+   * Delete a student from id.
+   * @param {StudentIdRequestParamsDto} studentIdDto
+   */
+  async deleteStudent(studentIdDto: StudentIdRequestParamsDto): Promise<void> {
+    const studentRepository = getRepository(StudentEntity);
+    const studentToUpdate = await studentRepository.findOne({
+      where: { id: studentIdDto.studentId },
+    });
+
+    if (!studentToUpdate)
+      throw new HttpException(
+        ErrorMessage.STUDENT_IS_NOT_FOUND,
+        HttpStatus.NOT_FOUND,
+      );
+
+    studentToUpdate.delete = true;
+
+    await studentRepository.save(studentToUpdate);
   }
 
   private modelToEntity(model: Student): StudentEntity {

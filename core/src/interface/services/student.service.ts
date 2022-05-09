@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UpdateStudentCommand } from '../../application/commands/impl/update-student.command';
 import { CreateStudentCommand } from '../../application/commands/impl/create-student.command';
-import { StudentDto } from '../dtos/student.dto';
+import { StudentDto, StudentIdRequestParamsDto } from '../dtos/student.dto';
 import { FindStudentsResponseDTO } from '../dtos/find-students-response.dto';
 import { FindStudentsQuery } from '../../application/queries/impl/find-students.query';
+import { DeleteStudentCommand } from '../../application/commands/impl/delete-student.command';
 
 @Injectable()
 export class StudentService {
@@ -19,6 +20,10 @@ export class StudentService {
 
   async updateStudent(student: StudentDto) {
     return await this.commandBus.execute(new UpdateStudentCommand(student));
+  }
+
+  async deleteStudent(student: StudentIdRequestParamsDto) {
+    return await this.commandBus.execute(new DeleteStudentCommand(student));
   }
 
   async findStudents(): Promise<FindStudentsResponseDTO> {

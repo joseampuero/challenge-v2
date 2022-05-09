@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -33,6 +34,16 @@ export class StudentController {
     @Body() studentDto: StudentDto,
   ): Promise<any> {
     return this.studentService.updateStudent({ ...studentId, ...studentDto });
+  }
+
+  /* Delete Student */
+  /*--------------------------------------------*/
+  @Delete(':studentId')
+  @HttpCode(HttpStatus.OK)
+  async deleteStudent(
+    @Param() studentId: StudentIdRequestParamsDto,
+  ): Promise<void> {
+    return this.studentService.deleteStudent(studentId);
   }
 
   /* List Students */
