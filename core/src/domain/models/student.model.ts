@@ -47,7 +47,6 @@ export class StudentImplement extends AggregateRoot implements Student {
   }
 
   update(entity: StudentEntity): void {
-    console.log('entity', entity);
     Object.assign(entity, this);
   }
 }

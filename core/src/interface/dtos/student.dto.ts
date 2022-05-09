@@ -1,5 +1,10 @@
 import { IsString } from 'class-validator';
 
+export class StudentIdRequestParamsDto {
+  @IsString()
+  readonly studentId!: string;
+}
+
 export class StudentDto {
   @IsString()
   readonly id!: string;
