@@ -48,3 +48,8 @@ yarn run test:e2e
 
 ### docker 
 - no implementado
+
+### Aclaraciones:
+Se implemento el mismo modelo entidad-relacion que en el entregable anterior. Pues, solo se usa una base de datos que funciona para lectura-escritura. 
+
+Tal vez lo ideal, para aprovechar al máximo cqrs, deberia a ver sido implementar el core junto a dos dbs. Donde una funciona para persistir los datos y la otra solo almacena views. De esta forma, se evitaria el cuello de botella teniendo una sola db. Pero como no se menciono cqrs + event sourcing asumi que con una db de lectura-escritura era suficiente.
