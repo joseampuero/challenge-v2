@@ -9,12 +9,12 @@ Contamos con tres microservicios
 
 Clonar proyecto.
 
-Entrar a cada carpeta de cada microservicio y correr
+Entrar a cada carpeta de cada microservicio y correr ***
 
 ```bash
 $ yarn install
 ```
-## Requisitos previos
+### Requisitos previos ***
 Tener instalado mysql.
 Ejecutar las queries que se encuentra en /core/scripts/queries.sql
 (esto se podía haber resuelto con una migracion).
