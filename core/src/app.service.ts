@@ -1,13 +1,13 @@
 import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Connection, createConnection } from 'typeorm';
-import { CourseProfessorEntity } from '../src/infrastructure/entities/course-professor.entity';
+import { CourseProfessorEntity } from './infrastructure/entities/course-professor.entity';
 import { CourseWithLaboratoryEntity } from './infrastructure/entities/course-with-laboratory.entity';
 import { CourseEntity } from './infrastructure/entities/course.entity';
 import { ProfessorEntity } from './infrastructure/entities/professor.entity';
 import { ScoreWithLaboratory } from './infrastructure/entities/score-with-laboratory.entity';
 import { ScoreEntity } from './infrastructure/entities/score.entity';
 import { StudentScoreEntity } from './infrastructure/entities/student-score.entity';
-import { StudentEntity } from '../src/infrastructure/entities/student.entity';
+import { StudentEntity } from './infrastructure/entities/student.entity';
 
 class DBConfig {
   readonly host: string;

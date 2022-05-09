@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
+import { FindStudentsResponseDTO } from '../dtos/find-students-response.dto';
 import { StudentDto, StudentIdRequestParamsDto } from '../dtos/student.dto';
 import { StudentService } from '../services/student.service';
 
@@ -31,5 +33,13 @@ export class StudentController {
     @Body() studentDto: StudentDto,
   ): Promise<any> {
     return this.studentService.updateStudent({ ...studentId, ...studentDto });
+  }
+
+  /* List Students */
+  /*--------------------------------------------*/
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async findStudents(): Promise<FindStudentsResponseDTO> {
+    return this.studentService.findStudents();
   }
 }
