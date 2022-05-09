@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../../src/app.module';
+import { StudentDto } from '../../src/interface/dtos/student.dto';
 
 describe('student controller', () => {
   let app: INestApplication;
@@ -15,10 +16,16 @@ describe('student controller', () => {
   });
 
   it('create should return id', async () => {
+    const dto: StudentDto = {
+      name: 'robert',
+      surname: 'deniro',
+      email: 'rdeniro@gmail.com',
+      dni: 12345678,
+      id: '123',
+    };
     const { body } = await request(app.getHttpServer())
       .post('/student')
-      .send({});
-
-    expect(body).toBeTruthy();
+      .send(dto)
+      .expect(HttpStatus.CREATED);
   });
 });

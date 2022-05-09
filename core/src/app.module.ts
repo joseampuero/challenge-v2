@@ -7,6 +7,6 @@ import { StudentModule } from './modules/student.module';
 @Module({
   imports: [StudentModule, ConfigModule.forRoot()],
   controllers: [AppController],
-  providers: [],
+  providers: [AppService],
 })
 export class AppModule {}

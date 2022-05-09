@@ -1,4 +1,4 @@
-import { ScoreEntity } from 'src/infrastructure/entities/score.entity';
+import { ScoreEntity } from '../../infrastructure/entities/score.entity';
 import { Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { CourseProfessorEntity } from './course-professor.entity';
 import { StudentEntity } from './student.entity';

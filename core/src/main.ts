@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { AppService } from './app.service';
 
 async function bootstrap() {
+  console.log(process.env.TCP_PORT);
   const app = await NestFactory.create(AppModule);
   app.connectMicroservice({
     transport: Transport.TCP,
